@@ -1,6 +1,6 @@
 # Pastikan Anda memiliki Node.js dan npm terinstal.
 # Masuk ke folder frontend
-cd frontend
+cd  task-manajement-vue
 
 # Instal dependensi
 npm install
