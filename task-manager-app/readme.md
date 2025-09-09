@@ -12,3 +12,6 @@ go mod tidy
 
 # Jalankan server
 go run main.go
+
+Backend akan berjalan di:
+👉 http://localhost:3000
