@@ -1,0 +1,141 @@
+basePath: /
+definitions:
+  models.Project:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      ownerId:
+        type: string
+    required:
+    - name
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      username:
+        minLength: 3
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
+host: localhost:3000
+info:
+  contact: {}
+  description: API untuk mengelola task dan project.
+  title: Task Manager API
+  version: "1.0"
+paths:
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Login dengan email dan password, dapatkan JWT
+      parameters:
+      - description: Kredensial Login
+        in: body
+        name: credentials
+        required: true
+        schema:
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: 'token: JWT_TOKEN'
+          schema:
+            type: object
+        "400":
+          description: 'error: Invalid request body'
+          schema:
+            type: object
+        "401":
+          description: 'error: Invalid credentials'
+          schema:
+            type: object
+      summary: Login user
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Mendaftarkan user baru dengan username, email, dan password
+      parameters:
+      - description: Informasi User
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'message: User registered successfully'
+          schema:
+            type: object
+        "400":
+          description: 'error: Invalid request body'
+          schema:
+            type: object
+        "409":
+          description: 'error: Email already registered'
+          schema:
+            type: object
+      summary: Register user baru
+      tags:
+      - Auth
+  /projects:
+    post:
+      consumes:
+      - application/json
+      description: Membuat project baru untuk user yang terotentikasi
+      parameters:
+      - description: Informasi Project
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: 'message: Project created successfully'
+          schema:
+            type: object
+        "400":
+          description: 'error: Invalid request body'
+          schema:
+            type: object
+        "401":
+          description: 'error: Invalid token'
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Buat project baru
+      tags:
+      - Projects
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
